@@ -1,0 +1,27 @@
+--- # Get facts for the user
+- name: 07 Create Virtual Machine 
+  hosts: localhost  
+  tasks:    
+    - name: Create a vm_image
+      azure.azcollection.azure_rm_virtualmachine:
+        resource_group: "{{ rg_name }}"
+        name: "{{ vm_name }}"
+        vm_size: "{{ vm_size }}"
+        admin_username: "{{ vm_username }}"
+        admin_password: "{{ vm_password }}"
+        image:
+          offer: "{{ offer }}"
+          publisher: "{{ publisher }}"
+          sku: "{{ sku }}"
+          version: "{{ version }}"
+        os_disk_caching: ReadWrite
+        os_disk_name: "{{ vm_name }}-os-disk"
+        network_interface_names:
+          - "{{ vm_name }}-nic"
+        network_interfaces:
+          - name: "{{ vm_name }}-nic"
+            properties:
+              primary: True
+        availability_set: null
+        ssh_public_keys: []
+        ssh_password_enabled: true

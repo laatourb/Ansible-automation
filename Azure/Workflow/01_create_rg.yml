@@ -1,0 +1,10 @@
+--- # Get facts for the user
+- name: 01 Create Resource Group
+  hosts: localhost  
+  tasks:    
+    - name: Create a Resource Group
+      azure.azcollection.azure_rm_resourcegroup:
+        name: "{{ rg_name }}"
+        location: "{{ location }}"
+      register: rg
+

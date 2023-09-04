@@ -1,0 +1,10 @@
+--- # Get facts for the user
+- name: 04 Create IP
+  hosts: localhost  
+  tasks:    
+    - name: Create a public IP address
+      azure.azcollection.azure_rm_publicipaddress:
+        resource_group: "{{ rg_name }}"
+        allocation_method: static
+        name: "{{ vm_name }}-public-ip"
+      register: public_ip

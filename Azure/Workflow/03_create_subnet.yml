@@ -1,0 +1,11 @@
+--- # Get facts for the user
+- name: 03 Create Subnet
+  hosts: localhost  
+  tasks:    
+    - name: Create a subnet
+      azure.azcollection.azure_rm_subnet:
+        resource_group: "{{ rg_name }}"
+        virtual_network_name: "{{ vnet_name }}"
+        name: "{{ subnet_name }}"
+        address_prefix: "10.0.0.0/24"
+      register: subnet

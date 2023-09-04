@@ -1,0 +1,11 @@
+--- # Get facts for the user
+- name: 02 Create VNet
+  hosts: localhost  
+  tasks:    
+    - name: Create a Virtual Network
+      azure.azcollection.azure_rm_virtualnetwork:
+        resource_group: "test-ansible"
+        name: "{{ vnet_name }}"
+        address_prefixes: "10.0.0.0/16"
+      register: vnet
+

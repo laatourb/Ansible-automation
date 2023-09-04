@@ -1,0 +1,12 @@
+--- # Get facts for the user
+- name: 06 Create NIC Card
+  hosts: localhost  
+  tasks:    
+    - name: Create a Virtual Network Interface Card
+      azure.azcollection.azure_rm_networkinterface:
+        resource_group: "{{ rg_name }}"
+        name: "{{ vm_name }}-nic"
+        virtual_network: "{{ vnet_name }}"
+        subnet_name: "{{ subnet_name }}"
+        public_ip_name: "{{ vm_name }}-public-ip" 
+        security_group: "{{ vm_name }}-nsg"

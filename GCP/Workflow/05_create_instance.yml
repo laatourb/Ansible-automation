@@ -1,0 +1,22 @@
+---
+- name: 05 Create an Instance in GCP
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Create an Instance 
+      google.cloud.gcp_compute_instance:
+        state: present
+        name: "{{ machine_name }}"
+        machine_type: "{{ machine_type }}"
+        zone: "{{ zone }}"
+        disks:
+          - auto_delete: true
+            boot: true
+            source: "{{ disk }}"
+        network_interfaces:
+          - network: "{{ network }}"
+            subnetwork: "{{ subnet }}"
+            access_configs:
+              - name: External NAT
+                type: ONE_TO_ONE_NAT
+                nat_ip: "{{ address }}"

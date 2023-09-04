@@ -1,0 +1,51 @@
+---
+- name: Creating an EC2 Instance with Creating a VPC and Subnet Id
+  hosts: localhost
+  tasks:
+    - name: Create a new VPC 
+      amazon.aws.ec2_vpc_net:
+        name: "Ansible-Test"
+        cidr_block: "{{ cidr_block }}"
+        region: "{{ region }}"
+      register: vpc
+  
+    - name: Create a new Subnet
+      amazon.aws.ec2_vpc_subnet:
+        cidr: "{{ cidr }}"
+        region: "{{ region }}"
+        vpc_id: "{{ vpc.vpc.id }}"
+      register: subnet
+    
+    - name: Create a Security Group  
+      amazon.aws.ec2_security_group:
+        name: "Ansible-Test-Security-Group"
+        description: "Ansible-Testing"
+        vpc_id: "{{ vpc.vpc.id }}"
+        region: "{{ region }}"
+        rules:
+          - proto: tcp
+            ports:
+            - 80
+            cidr_ip: 0.0.0.0/0
+            rule_desc: "allow all on port 80"
+      register: security_group
+    
+    - ansible.builtin.debug:
+        var: security_group.group_id
+
+    - ansible.builtin.debug:
+        var: subnet.subnet.id
+    
+    - name: Launch an EC2 Instance
+      amazon.aws.ec2_instance:
+        name: "Test-Ansible"
+        key_name: "{{ key_name }}"
+        vpc_subnet_id: "{{ subnet.subnet.id }}"
+        instance_type: "{{ instance_type }}"
+        security_group: "{{ security_group.group_id  }}"
+        count: 1
+        wait: yes
+        aws_region: "ap-south-1"
+        network:
+          assign_public_ip: true
+        image_id: "{{ ami }}"

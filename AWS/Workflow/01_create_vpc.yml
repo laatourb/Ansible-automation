@@ -1,0 +1,16 @@
+---
+- name: Creating an EC2 Instance with Creating a VPC and Subnet Id
+  hosts: localhost
+  tasks:
+    - name: Create a new VPC 
+      amazon.aws.ec2_vpc_net:
+        name: "Ansible-Test"
+        cidr_block: "{{ cidr_block }}"
+        region: "{{ region }}"
+      register: vpc
+  
+    - name: "Artifact the VPC vars"
+      ansible.builtin.set_stats:
+        data:
+          vpc: "{{vpc}}"
+         

@@ -1,0 +1,80 @@
+--- # Get facts for the user
+- name: Job Template for creating a Virtual Machine using Ansible Automation Platform 2.2 Job Template
+  hosts: localhost  
+  tasks:    
+    - name: Create a Resource Group
+      azure.azcollection.azure_rm_resourcegroup:
+        name: "{{ rg_name }}"
+        location: "{{ location }}"
+      register: rg
+
+    - name: Create a Virtual Network
+      azure.azcollection.azure_rm_virtualnetwork:
+        resource_group: "test-ansible"
+        name: "{{ vnet_name }}"
+        address_prefixes: "10.0.0.0/16"
+      register: vnet
+
+    - name: Create a subnet
+      azure.azcollection.azure_rm_subnet:
+        resource_group: "{{ rg_name }}"
+        virtual_network_name: "{{ vnet_name }}"
+        name: "{{ subnet_name }}"
+        address_prefix: "10.0.0.0/24"
+      register: subnet
+
+    - name: Create a public IP address
+      azure.azcollection.azure_rm_publicipaddress:
+        resource_group: "{{ rg_name }}"
+        allocation_method: static
+        name: "{{ vm_name }}-public-ip"
+      register: public_ip
+
+    - name: Create a network security group and configure the security group
+      azure.azcollection.azure_rm_securitygroup:
+        resource_group: "{{ rg_name }}"
+        name: "{{ vm_name }}-nsg"
+        rules:
+          - name: "AllowSSH"
+            protocol: Tcp
+            direction: Inbound
+            priority: 1000
+            access: Allow
+            source_address_prefix: "*"
+            source_port_range: "*"
+            destination_port_range: "22"
+            destination_address_prefix: "*"
+      register: nsg
+    
+    - name: Create a Virtual Network Interface Card
+      azure.azcollection.azure_rm_networkinterface:
+        resource_group: "{{ rg_name }}"
+        name: "{{ vm_name }}-nic"
+        virtual_network: "{{ vnet_name }}"
+        subnet_name: "{{ subnet_name }}"
+        public_ip_name: "{{ vm_name }}-public-ip" 
+        security_group: "{{ vm_name }}-nsg"
+
+    - name: Create a vm_image
+      azure.azcollection.azure_rm_virtualmachine:
+        resource_group: "{{ rg_name }}"
+        name: "{{ vm_name }}"
+        vm_size: "{{ vm_size }}"
+        admin_username: "{{ vm_username }}"
+        admin_password: "{{ vm_password }}"
+        image:
+          offer: "{{ offer }}"
+          publisher: "{{ publisher }}"
+          sku: "{{ sku }}"
+          version: "{{ version }}"
+        os_disk_caching: ReadWrite
+        os_disk_name: "{{ vm_name }}-os-disk"
+        network_interface_names:
+          - "{{ vm_name }}-nic"
+        network_interfaces:
+          - name: "{{ vm_name }}-nic"
+            properties:
+              primary: True
+        availability_set: null
+        ssh_public_keys: []
+        ssh_password_enabled: true

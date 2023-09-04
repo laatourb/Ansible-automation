@@ -1,0 +1,18 @@
+---
+- name: 01 Create Disk in GCP
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Create a disk and configure the disk
+      google.cloud.gcp_compute_disk:
+        name: "{{ disk_name }}"
+        size_gb: "{{ disk_size }}"
+        source_image: "{{ source_image }}"
+        zone: "{{ zone }}"
+        state: present
+      register: disk
+
+    - name: "Artifact the Disk vars"
+      ansible.builtin.set_stats:
+        data:
+          disk: "{{disk}}"

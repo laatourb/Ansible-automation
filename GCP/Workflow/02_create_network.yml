@@ -1,0 +1,16 @@
+---
+- name: 02 Create Network 
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Create a Network in GCP
+      google.cloud.gcp_compute_network:
+        name: "{{ network_name }}"
+        auto_create_subnetworks: false
+        state: present
+      register: network
+
+    - name: "Artifact the Network vars"
+      ansible.builtin.set_stats:
+        data:
+          network: "{{network}}"

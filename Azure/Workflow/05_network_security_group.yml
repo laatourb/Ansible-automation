@@ -1,0 +1,19 @@
+--- # Get facts for the user
+- name: 05 Create Network Security Group
+  hosts: localhost  
+  tasks:    
+    - name: Create a network security group and configure the security group
+      azure.azcollection.azure_rm_securitygroup:
+        resource_group: "{{ rg_name }}"
+        name: "{{ vm_name }}-nsg"
+        rules:
+          - name: "AllowSSH"
+            protocol: Tcp
+            direction: Inbound
+            priority: 1000
+            access: Allow
+            source_address_prefix: "*"
+            source_port_range: "*"
+            destination_port_range: "22"
+            destination_address_prefix: "*"
+      register: nsg

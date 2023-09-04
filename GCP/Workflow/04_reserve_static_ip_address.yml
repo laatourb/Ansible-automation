@@ -1,0 +1,16 @@
+---
+- name: 04 Create an IP Address
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Reserve a static IP Address
+      google.cloud.gcp_compute_address:
+        name: "{{ ip_name }}"
+        region: "{{ region }}"
+        state: present
+      register: address
+
+    - name: "Artifact the Subnet vars"
+      ansible.builtin.set_stats:
+        data:
+          address: "{{address}}"
