@@ -4,7 +4,7 @@
   tasks:    
     - name: Create a Virtual Network
       azure.azcollection.azure_rm_virtualnetwork:
-        resource_group: "test-ansible"
+        resource_group: "PERSO_BILAL"
         name: "{{ vnet_name }}"
         address_prefixes: "10.0.0.0/16"
       register: vnet
