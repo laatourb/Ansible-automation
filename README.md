@@ -25,14 +25,6 @@ To use these templates:
 * Update the variables and options as required.
 * Run the workflow or job.
 
-## Additional Resources
-For more information on using Ansible to provision virtual machine instances in the cloud, please refer to the following resources:
-
-* How to create a Virtual Machine on Microsoft Azure using Ansible CLI
-* How to create an Instance on GCP using Ansible CLI
-* How to create an EC2 on Amazon Web Service using Ansible CLI
 
 Additionally, you can refer to the Ansible documentation for more detailed information on using Ansible.
 
-## License
-This repository is licensed under the [MIT License](LICENSE).
