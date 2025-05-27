@@ -1,0 +1,25 @@
+--- # Get facts for the user
+- name: 05 Créer le groupe de sécurité réseau Azure
+  azure.azcollection.azure_rm_securitygroup:
+    resource_group: "{{ resource_group.name }}"
+    name: "{{ network_security_group.name }}"
+    rules:
+      - name: allow_ssh
+        protocol: Tcp
+        source_address_prefix: "*"
+        destination_address_prefix: "*"
+        source_port_range: "*"
+        destination_port_range: 22
+        access: Allow
+        priority: 100
+        direction: Inbound
+    state: present
+  register: nsg_output
+
+- name: Afficher le message de confirmation du NSG
+  ansible.builtin.debug:
+    msg: "Groupe de sécurité réseau créé avec succès : {{ network_security_group.name }}"
+
+- name: Afficher les détails du NSG
+  ansible.builtin.debug:
+    var: nsg_output

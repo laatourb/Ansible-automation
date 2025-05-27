@@ -1,0 +1,12 @@
+---
+- name: 01 Créer le groupe de ressources Azure
+  azure.azcollection.azure_rm_resourcegroup:
+    name: "{{ resource_group.name }}"
+    location: "{{ resource_group.location }}"
+    state: present
+  register: rg_output
+
+- name: Afficher les informations du groupe de ressources
+  ansible.builtin.debug:
+    var: rg_output
+

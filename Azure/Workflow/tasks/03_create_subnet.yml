@@ -1,0 +1,17 @@
+--- # Get facts for the user
+- name: 03 Créer le sous-réseau Azure
+  azure.azcollection.azure_rm_subnet:
+    resource_group: "{{ resource_group.name }}"
+    virtual_network_name: "{{ virtual_network.name }}"
+    name: "{{ subnet.name }}"
+    address_prefix: "{{ subnet.address_prefix }}"
+    state: present
+  register: subnet_output
+
+- name: Afficher le message de confirmation du sous-réseau
+  ansible.builtin.debug:
+    msg: "Sous-réseau créé avec succès : {{ subnet.name }} dans {{ virtual_network.name }}"
+
+- name: Afficher les détails du sous-réseau
+  ansible.builtin.debug:
+    var: subnet_output

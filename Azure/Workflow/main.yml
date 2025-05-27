@@ -1,0 +1,36 @@
+---
+- name: Déploiement complet de l'infrastructure Azure
+  hosts: localhost
+  gather_facts: false
+  vars_files:
+    - vars/main.yml
+    - vars/defaults.yml
+    - credentials.yml
+
+  # environment:
+  #   AZURE_SUBSCRIPTION_ID: "{{ azure_subscription_id }}"
+  #   AZURE_CLIENT_ID: "{{ azure_client_id }}"
+  #   AZURE_SECRET: "{{ azure_secret }}"
+  #   AZURE_TENANT: "{{ azure_tenant }}"
+
+  tasks:
+    - name: Inclure la création du groupe de ressources
+      ansible.builtin.import_tasks: tasks/01_create_rg.yml
+
+    - name: Inclure la création du réseau virtuel
+      ansible.builtin.import_tasks: tasks/02_create_vnet.yml
+
+    - name: Inclure la création du sous-réseau
+      ansible.builtin.import_tasks: tasks/03_create_subnet.yml
+
+    - name: Inclure la création de l'adresse IP publique
+      ansible.builtin.import_tasks: tasks/04_create_ip.yml
+
+    - name: Inclure la création du groupe de sécurité réseau
+      ansible.builtin.import_tasks: tasks/05_network_security_group.yml
+
+    - name: Inclure la création de l'interface réseau
+      ansible.builtin.import_tasks: tasks/06_nic.yml
+
+    - name: Inclure la création de la machine virtuelle
+      ansible.builtin.import_tasks: tasks/07_create_vm.yml 

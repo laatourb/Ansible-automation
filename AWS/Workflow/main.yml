@@ -1,0 +1,19 @@
+---
+# Create a complete AWS infrastructure
+- name: Création d'une infrastructure AWS complète
+  hosts: localhost
+  gather_facts: false
+  
+  vars_files:
+    - vars/main.yml
+    - vars/defaults.yml
+
+  tasks:
+    - name: Inclure les tâches de création du VPC
+      ansible.builtin.import_tasks: tasks/01-create_vpc.yml
+
+    - name: Inclure les tâches de création du Security Group
+      ansible.builtin.import_tasks: tasks/02-create_security_group.yml
+
+    - name: Inclure les tâches de création de l'instance EC2
+      ansible.builtin.import_tasks: tasks/03-create_ec2.yml 

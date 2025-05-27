@@ -1,0 +1,13 @@
+---
+- name: 02 Créer le réseau virtuel Azure
+  azure.azcollection.azure_rm_virtualnetwork:
+    resource_group: "{{ resource_group.name }}"
+    name: "{{ virtual_network.name }}"
+    address_prefixes: "{{ virtual_network.address_space }}"
+    state: present
+  register: vnet_output
+
+- name: Afficher les informations du réseau virtuel
+  ansible.builtin.debug:
+    var: vnet_output
+

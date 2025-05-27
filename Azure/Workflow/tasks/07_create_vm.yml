@@ -1,0 +1,45 @@
+--- # Get facts for the user
+- name: 07 Créer la machine virtuelle Azure
+  azure.azcollection.azure_rm_virtualmachine:
+    resource_group: "{{ resource_group.name }}"
+    name: "{{ virtual_machine.name }}"
+    vm_size: "{{ virtual_machine.size }}"
+    admin_username: "{{ virtual_machine.admin_username }}"
+    admin_password: "{{ virtual_machine.admin_password }}"
+    network_interfaces: "{{ network_interface.name }}"
+    image:
+      publisher: "{{ virtual_machine.image.publisher }}"
+      offer: "{{ virtual_machine.image.offer }}"
+      sku: "{{ virtual_machine.image.sku }}"
+      version: "{{ virtual_machine.image.version }}"
+    os_disk_name: "{{ virtual_machine.name }}-osdisk"
+    managed_disk_type: Standard_LRS
+    state: present
+  register: vm_output
+
+# Display the confirmation message of the VM
+- name: Afficher le message de confirmation de la VM
+  ansible.builtin.debug:
+    msg: "Machine virtuelle créée avec succès : {{ virtual_machine.name }}"
+
+# Display the details of the VM
+- name: Afficher les détails de la VM
+  ansible.builtin.debug:
+    var: vm_output
+
+# Get the public IP address of the VM
+- name: Obtenir l'adresse IP publique
+  azure.azcollection.azure_rm_publicipaddress_info:
+    resource_group: "{{ resource_group.name }}"
+    name: "{{ public_ip.name }}"
+  register: pip_info
+
+# Display the connection information of the VM
+- name: Afficher les informations de connexion
+  ansible.builtin.debug:
+    msg: |
+      Machine virtuelle déployée avec succès !
+      Nom: {{ virtual_machine.name }}
+      Nom d'utilisateur: {{ virtual_machine.admin_username }}
+      Mot de passe: {{ virtual_machine.admin_password }}
+      Pour vous connecter: ssh {{ virtual_machine.admin_username }}@{{ pip_info.publicipaddresses[0].ip_address }}

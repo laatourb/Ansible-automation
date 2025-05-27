@@ -1,0 +1,34 @@
+---
+# Variables pour les ressources Azure
+resource_group:
+  name: "{{ resource_group_name }}"
+  location: "{{ location }}"
+
+virtual_network:
+  name: "{{ vnet_name }}"
+  address_space: "{{ vnet_address_space }}"
+
+subnet:
+  name: "{{ subnet_name }}"
+  address_prefix: "{{ subnet_address_prefix }}"
+
+public_ip:
+  name: "{{ public_ip_name }}"
+  allocation_method: "{{ public_ip_allocation_method }}"
+
+network_security_group:
+  name: "{{ nsg_name }}"
+
+network_interface:
+  name: "{{ nic_name }}"
+
+virtual_machine:
+  name: "{{ vm_name }}"
+  size: "{{ vm_size }}"
+  admin_username: "{{ admin_username }}"
+  admin_password: "{{ admin_password }}"
+  image:
+    publisher: "{{ image_publisher }}"
+    offer: "{{ image_offer }}"
+    sku: "{{ image_sku }}"
+    version: "{{ image_version }}" 

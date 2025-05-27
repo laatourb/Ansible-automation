@@ -1,0 +1,20 @@
+---
+# Launch an EC2 Instance
+- name: Launch an EC2 Instance
+  amazon.aws.ec2_instance:
+    name: "{{ instance_name }}"
+    key_name: "{{ key_name }}"
+    vpc_subnet_id: "{{ subnet.subnet.id }}"
+    instance_type: "{{ instance_type }}"
+    security_group: "{{ security_group.group_id }}"
+    count: 1
+    wait: yes
+    aws_region: "{{ aws_region }}"
+    network:
+      assign_public_ip: "{{ assign_public_ip }}"
+    image_id: "{{ ami }}" 
+
+# Display the information of the EC2 instance
+- name: Afficher les informations de l'instance EC2
+  ansible.builtin.debug:
+    var: ec2

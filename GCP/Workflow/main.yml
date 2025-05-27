@@ -1,0 +1,25 @@
+---
+# Create a complete GCP infrastructure
+- name: Création d'une infrastructure GCP complète
+  hosts: localhost
+  gather_facts: false
+  
+  vars_files:
+    - vars/main.yml
+    - vars/defaults.yml
+
+  tasks:
+    - name: Inclure les tâches de création du disque
+      ansible.builtin.import_tasks: tasks/01_create_disk.yml
+    
+    - name: Inclure les tâches de création du réseau
+      ansible.builtin.import_tasks: tasks/02_create_network.yml
+    
+    - name: Inclure les tâches de création du sous-réseau
+      ansible.builtin.import_tasks: tasks/03_create_subnet.yml
+
+    - name: Inclure les tâches de création de l'adresse IP publique
+      ansible.builtin.import_tasks: tasks/04_reserve_static_ip_address.yml
+    
+    - name: Inclure les tâches de création de l'instance
+      ansible.builtin.import_tasks: tasks/05_create_instance.yml

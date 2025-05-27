@@ -1,0 +1,20 @@
+---
+# Create a Security Group
+- name: Create a Security Group
+  amazon.aws.ec2_security_group:
+    name: "{{ security_group_name }}"
+    description: "{{ security_group_description }}"
+    vpc_id: "{{ vpc.vpc.id }}"
+    region: "{{ aws_region }}"
+    rules:
+      - proto: tcp
+        ports:
+        - 80
+        cidr_ip: 0.0.0.0/0
+        rule_desc: "allow all on port 80"
+  register: security_group 
+
+# Display the information of the security group
+- name: Afficher les informations du groupe de sécurité
+  ansible.builtin.debug:
+    var: security_group

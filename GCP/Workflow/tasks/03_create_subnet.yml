@@ -1,0 +1,14 @@
+---
+- name: 03 Create Subnet in Network
+  google.cloud.gcp_compute_subnetwork:
+    name: "{{ subnet_name }}"
+    region: "{{ region }}"
+    ip_cidr_range: "{{ subnet_cidr }}"
+    network: "{{ network }}"
+    state: present
+  register: subnet
+
+- name: "Artifact the Subnet vars"
+  ansible.builtin.set_stats:
+    data:
+      subnet: "{{subnet}}"

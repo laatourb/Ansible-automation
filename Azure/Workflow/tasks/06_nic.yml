@@ -1,0 +1,24 @@
+--- # Get facts for the user
+- name: 06 Créer l'interface réseau Azure
+  azure.azcollection.azure_rm_networkinterface:
+    resource_group: "{{ resource_group.name }}"
+    name: "{{ network_interface.name }}"
+    virtual_network: "{{ virtual_network.name }}"
+    subnet_name: "{{ subnet.name }}"
+    security_group: "{{ network_security_group.name }}"
+    ip_configurations:
+      - name: "{{ network_interface.name }}-ipconfig"
+        public_ip_address_name: "{{ public_ip.name }}"
+        primary: true
+    state: present
+  register: nic_output
+
+- name: Afficher le message de confirmation de l'interface réseau
+  ansible.builtin.debug:
+    msg: "Interface réseau créée avec succès : {{ network_interface.name }}"
+
+- name: Afficher les détails de l'interface réseau
+  ansible.builtin.debug:
+    var: nic_output
+
+    

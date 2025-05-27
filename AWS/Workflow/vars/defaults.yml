@@ -1,0 +1,20 @@
+---
+# Variables for AWS configuration
+aws_region: "ap-south-1"
+cidr_block: "10.0.0.0/16"
+subnet_cidr: "10.0.1.0/24"
+instance_type: "t2.micro"
+key_name: "ansible-key"
+ami: "ami-0c55b159cbfafe1f0"  # Amazon Linux 2 AMI ID
+
+# Configuration of VPC
+vpc_name: "Ansible-Test"
+vpc_description: "VPC créé par Ansible"
+
+# Configuration du Security Group
+security_group_name: "Ansible-Test-Security-Group"
+security_group_description: "Security Group pour les tests Ansible"
+
+# Configuration of EC2
+instance_name: "Test-Ansible"
+assign_public_ip: true

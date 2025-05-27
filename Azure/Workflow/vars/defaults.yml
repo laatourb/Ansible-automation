@@ -1,0 +1,27 @@
+---
+# Variables par défaut pour l'environnement de développement
+resource_group_name: "rg-dev"
+location: "westeurope"
+
+vnet_name: "vnet-dev"
+vnet_address_space: "10.0.0.0/16"
+
+subnet_name: "subnet-dev"
+subnet_address_prefix: "10.0.1.0/24"
+
+public_ip_name: "pip-dev"
+public_ip_allocation_method: "Dynamic"
+
+nsg_name: "nsg-dev"
+
+nic_name: "nic-dev"
+
+vm_name: "vm-dev"
+vm_size: "Standard_B1s"
+admin_username: "azureuser"
+admin_password: "ChangeMe123!"
+
+image_publisher: "Canonical"
+image_offer: "UbuntuServer"
+image_sku: "18.04-LTS"
+image_version: "latest" 
