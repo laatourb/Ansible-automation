@@ -1,12 +1,28 @@
+# =============================================
+# Création du Groupe de Ressources Azure
+# =============================================
 ---
-- name: 01 Créer le groupe de ressources Azure
-  azure.azcollection.azure_rm_resourcegroup:
-    name: "{{ resource_group.name }}"
-    location: "{{ resource_group.location }}"
-    state: present
-  register: rg_output
+- name: Vérifier si le groupe de ressources existe
+  azure.azcollection.azure_rm_resourcegroup_info:
+    name: "{{ resource_group_name }}"
+  register: rg_info
+  tags:
+    - resource_group
+    - check
 
+# Créer le groupe de ressources s'il n'existe pas
+- name: Créer le groupe de ressources s'il n'existe pas
+  azure.azcollection.azure_rm_resourcegroup:
+    name: "{{ resource_group_name }}"
+    location: "{{ location }}"
+    state: present
+  when: rg_info.resourcegroups | length == 0
+  tags:
+    - resource_group
+    - create
+
+# Afficher les informations du groupe de ressources
 - name: Afficher les informations du groupe de ressources
   ansible.builtin.debug:
-    var: rg_output
+    var: rg_info
 

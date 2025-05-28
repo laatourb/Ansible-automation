@@ -1,49 +1,128 @@
-# GCP Cloud Instances Provisioning with Ansible
+# Déploiement GCP avec Ansible
 
-Ce répertoire contient les playbooks Ansible pour automatiser le déploiement d'infrastructure GCP.
+Ce projet automatise le déploiement d'infrastructure Google Cloud Platform (GCP) en utilisant Ansible, avec une gestion sécurisée des secrets via Ansible Vault.
 
-## Structure du projet
+## Structure du Projet
 
 ```
 GCP/
 ├── Workflow/
-│   ├── main.yml           # Point d'entrée principal
+│   ├── deploy.sh           # Script principal de déploiement
+│   ├── main.yml           # Playbook principal
+│   ├── .env               # Variables d'environnement (créé automatiquement)
+│   ├── .vault_pass        # Mot de passe pour Ansible Vault (généré automatiquement)
 │   ├── vars/
-│   │   ├── main.yml       # Variables avec valeurs par défaut
-│   │   └── defaults.yml   # Variables par défaut
+│   │   ├── main.yml       # Variables principales
+│   │   ├── defaults.yml   # Variables par défaut
+│   │   └── vault.yml      # Variables sensibles chiffrées
 │   └── tasks/
-│       ├── 01-create_network.yml
-│       ├── 02-create_firewall.yml
-│       └── 03-create_instance.yml
-└── README.md
-```
-
-## Utilisation
-
-Pour exécuter le playbook principal avec les variables par défaut :
-
-```bash
-ansible-playbook Workflow/main.yml
-```
-
-Pour surcharger les variables par défaut :
-
-```bash
-ansible-playbook Workflow/main.yml -e "gcp_region=europe-west1 machine_type=e2-micro"
+│       ├── 01_create_network.yml
+│       ├── 02_create_subnet.yml
+│       ├── 03_create_firewall.yml
+│       ├── 04_create_router.yml
+│       ├── 05_create_nat.yml
+│       └── 06_create_vm.yml
 ```
 
 ## Prérequis
 
 - Ansible installé
-- GCP CLI configuré avec les credentials appropriés
-- Les collections Ansible suivantes :
-  - google.cloud
-  - community.google
+- Google Cloud SDK installé et configuré
+- Accès à un projet GCP avec les permissions nécessaires
 
-## Variables principales
+## Configuration
 
-- `gcp_region` : Région GCP (par défaut: europe-west1)
-- `machine_type` : Type de machine (par défaut: e2-micro)
-- `project_id` : ID du projet GCP
-- `network_name` : Nom du réseau
-- `subnet_name` : Nom du sous-réseau
+1. **Variables d'Environnement**
+   - Le fichier `.env` est créé automatiquement lors de la première exécution
+   - Remplissez les variables avec vos informations GCP :
+     ```bash
+     # Credentials GCP
+     GCP_PROJECT_ID=votre_project_id
+     GCP_AUTH_KIND=serviceaccount
+     GCP_SERVICE_ACCOUNT_FILE=chemin/vers/service-account.json
+     GCP_REGION=votre_region
+
+     # Mot de passe pour le vault Ansible
+     ANSIBLE_VAULT_PASSWORD=votre_mot_de_passe_vault
+
+     # Variables pour le vault
+     VAULT_GCP_PROJECT_ID=votre_project_id
+     VAULT_GCP_SERVICE_ACCOUNT_FILE=chemin/vers/service-account.json
+     VAULT_GCP_REGION=votre_region
+     VAULT_VM_ADMIN_PASSWORD=votre_mot_de_passe_vm
+     ```
+
+2. **Gestion des Secrets**
+   - Les variables sensibles sont stockées dans `vars/vault.yml`
+   - Ce fichier est automatiquement chiffré lors de la première exécution
+   - Pour voir le contenu :
+     ```bash
+     ansible-vault view vars/vault.yml --vault-password-file .vault_pass
+     ```
+   - Pour modifier le contenu :
+     ```bash
+     ansible-vault edit vars/vault.yml --vault-password-file .vault_pass
+     ```
+
+## Déploiement
+
+1. **Préparation**
+   ```bash
+   # Vérifier la configuration GCP
+   gcloud config list
+
+   # Vérifier l'authentification
+   gcloud auth list
+   ```
+
+2. **Exécution**
+   ```bash
+   # Rendre le script exécutable
+   chmod +x deploy.sh
+
+   # Lancer le déploiement
+   ./deploy.sh
+   ```
+
+## Ressources Créées
+
+Le playbook crée les ressources GCP suivantes :
+- Réseau VPC
+- Sous-réseaux
+- Règles de pare-feu
+- Routeur Cloud
+- NAT Gateway
+- Instance Compute Engine
+
+## Sécurité
+
+- Les mots de passe et secrets sont stockés de manière sécurisée dans `vault.yml`
+- Le fichier `.vault_pass` est créé temporairement pendant l'exécution
+- Les permissions sont restreintes sur les fichiers sensibles
+- Le fichier `.env` ne doit pas être commité dans le dépôt Git
+
+## Dépannage
+
+1. **Erreur de Connexion GCP**
+   ```bash
+   # Vérifier la configuration
+   gcloud config list
+   # Vérifier l'authentification
+   gcloud auth list
+   ```
+
+2. **Erreur de Vault**
+   ```bash
+   # Vérifier le contenu du vault
+   ansible-vault view vars/vault.yml --vault-password-file .vault_pass
+   # Recréer le vault si nécessaire
+   rm vars/vault.yml
+   ./deploy.sh
+   ```
+
+3. **Erreur de Variables**
+   - Vérifier que toutes les variables sont définies dans `.env`
+   - Vérifier les permissions sur les fichiers
+   - Vérifier la syntaxe des variables dans `vars/main.yml`
+
+

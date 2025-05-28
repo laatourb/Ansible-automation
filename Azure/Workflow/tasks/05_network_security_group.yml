@@ -1,5 +1,9 @@
---- # Get facts for the user
-- name: 05 Créer le groupe de sécurité réseau Azure
+# =============================================
+# Création du Groupe de Sécurité Réseau Azure
+# =============================================
+---
+# Créer le groupe de sécurité réseau Azure
+- name: Créer le groupe de sécurité réseau Azure
   azure.azcollection.azure_rm_securitygroup:
     resource_group: "{{ resource_group.name }}"
     name: "{{ network_security_group.name }}"
@@ -16,10 +20,12 @@
     state: present
   register: nsg_output
 
+# Afficher le message de confirmation du NSG
 - name: Afficher le message de confirmation du NSG
   ansible.builtin.debug:
     msg: "Groupe de sécurité réseau créé avec succès : {{ network_security_group.name }}"
 
+# Afficher les détails du NSG
 - name: Afficher les détails du NSG
   ansible.builtin.debug:
     var: nsg_output

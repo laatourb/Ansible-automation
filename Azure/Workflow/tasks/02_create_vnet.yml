@@ -1,5 +1,9 @@
+# =============================================
+# Création du Réseau Virtuel Azure
+# =============================================
 ---
-- name: 02 Créer le réseau virtuel Azure
+# Créer le réseau virtuel Azure
+- name: Créer le réseau virtuel Azure
   azure.azcollection.azure_rm_virtualnetwork:
     resource_group: "{{ resource_group.name }}"
     name: "{{ virtual_network.name }}"
@@ -7,6 +11,7 @@
     state: present
   register: vnet_output
 
+# Afficher les informations du réseau virtuel
 - name: Afficher les informations du réseau virtuel
   ansible.builtin.debug:
     var: vnet_output

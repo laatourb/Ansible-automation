@@ -1,5 +1,9 @@
+# =============================================
+# Création de l'Instance dans GCP
+# =============================================
 ---
-- name: 05 Create an Instance in GCP
+# Créer l'instance dans GCP
+- name: Create an Instance in GCP
   google.cloud.gcp_compute_instance:
     state: present
     name: "{{ machine_name }}"

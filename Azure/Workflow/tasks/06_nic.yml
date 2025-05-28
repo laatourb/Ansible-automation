@@ -1,5 +1,9 @@
---- # Get facts for the user
-- name: 06 Créer l'interface réseau Azure
+# =============================================
+# Création de l'Interface Réseau Azure
+# =============================================
+---
+# Créer l'interface réseau Azure
+- name: Créer l'interface réseau Azure
   azure.azcollection.azure_rm_networkinterface:
     resource_group: "{{ resource_group.name }}"
     name: "{{ network_interface.name }}"
@@ -13,6 +17,7 @@
     state: present
   register: nic_output
 
+# Afficher le message de confirmation de l'interface réseau
 - name: Afficher le message de confirmation de l'interface réseau
   ansible.builtin.debug:
     msg: "Interface réseau créée avec succès : {{ network_interface.name }}"

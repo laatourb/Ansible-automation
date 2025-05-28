@@ -1,30 +1,68 @@
-# Ansible Automation Platform Cloud Solutions
+# Solutions Cloud avec Ansible Automation Platform
 
-This repository contains Ansible playbooks and scripts for provisioning virtual machine instances in Azure, AWS, and GCP cloud environments. These playbooks provide a simple way to deploy and configure virtual machines in the cloud, and can be easily customized to meet specific requirements.
+Ce dépôt contient des playbooks et scripts Ansible pour le provisionnement de machines virtuelles dans les environnements cloud Azure, AWS et GCP. Ces playbooks offrent une méthode simple pour déployer et configurer des machines virtuelles dans le cloud, et peuvent être facilement personnalisés selon vos besoins spécifiques.
 
-## Prerequisites
-To use these playbooks, you will need:
+## Prérequis
+Pour utiliser ces playbooks, vous aurez besoin de :
 
-* A valid subscription to the cloud service you want to provision instances in (Azure, AWS, or GCP).
-* Ansible Automation Platform installed on your local machine or on a remote server.
-* An inventory file that specifies the target cloud environment, as well as the required credentials for authenticating to the cloud service
+* Un abonnement valide au service cloud souhaité (Azure, AWS ou GCP)
+* Ansible Automation Platform installé sur votre machine locale ou sur un serveur distant
+* Un fichier d'inventaire spécifiant l'environnement cloud cible et les identifiants nécessaires
+* Les collections Ansible appropriées pour chaque cloud provider
 
-## Usage
-To use these playbooks:
+## Structure du Projet
 
-* Clone this repository to your local machine or Ansible control node.
-* Update the inventory file with your target cloud environment and credentials.
-* Run the desired playbook for your target cloud provider, specifying any required variables.
+```
+.
+├── AWS/                    # Playbooks pour AWS
+├── Azure/                  # Playbooks pour Azure
+├── GCP/                    # Playbooks pour GCP
+└── README.md              # Documentation principale
+```
 
-## Workflow and Job Templates
-Workflow and job templates are included in this repository for use with Ansible Automation Platform. These templates provide a graphical interface for running the playbooks and scripts in this repository, and can be easily customized to meet specific requirements.
+## Sécurité
 
-To use these templates:
-* Import the templates into Ansible Automation Platform.
-* Create a new workflow or job using the imported template.
-* Update the variables and options as required.
-* Run the workflow or job.
+Les informations sensibles (mots de passe, clés API, etc.) sont gérées de manière sécurisée via :
+- Des fichiers de variables chiffrés avec Ansible Vault
+- Des variables d'environnement
+- Des secrets stockés dans un gestionnaire de secrets externe
 
+## Utilisation
 
-Additionally, you can refer to the Ansible documentation for more detailed information on using Ansible.
+Pour chaque cloud provider, un script `deploy.sh` est fourni pour faciliter le déploiement :
+
+```bash
+# Pour AWS
+cd AWS/Workflow
+./deploy.sh
+
+# Pour Azure
+cd Azure/Workflow
+./deploy.sh
+
+# Pour GCP
+cd GCP/Workflow
+./deploy.sh
+```
+
+## Templates de Workflow et Jobs
+
+Des templates de workflow et de jobs sont inclus dans ce dépôt pour une utilisation avec Ansible Automation Platform. Ces templates fournissent une interface graphique pour exécuter les playbooks et scripts, et peuvent être facilement personnalisés.
+
+Pour utiliser ces templates :
+* Importer les templates dans Ansible Automation Platform
+* Créer un nouveau workflow ou job en utilisant le template importé
+* Mettre à jour les variables et options selon vos besoins
+* Exécuter le workflow ou le job
+
+## Documentation
+
+Chaque dossier cloud contient sa propre documentation détaillée :
+- [Documentation AWS](AWS/README.md)
+- [Documentation Azure](Azure/README.md)
+- [Documentation GCP](GCP/README.md)
+
+## Support
+
+Pour toute question ou problème, veuillez créer une issue dans ce dépôt.
 

@@ -1,11 +1,14 @@
---- # Get facts for the user
-- name: 07 Créer la machine virtuelle Azure
+# =============================================
+# Création de la Machine Virtuelle Azure
+# =============================================
+---
+- name: Créer la machine virtuelle Azure
   azure.azcollection.azure_rm_virtualmachine:
     resource_group: "{{ resource_group.name }}"
     name: "{{ virtual_machine.name }}"
     vm_size: "{{ virtual_machine.size }}"
     admin_username: "{{ virtual_machine.admin_username }}"
-    admin_password: "{{ virtual_machine.admin_password }}"
+    admin_password: "{{ admin_password }}"
     network_interfaces: "{{ network_interface.name }}"
     image:
       publisher: "{{ virtual_machine.image.publisher }}"
@@ -34,12 +37,11 @@
     name: "{{ public_ip.name }}"
   register: pip_info
 
-# Display the connection information of the VM
+# Afficher les informations de connexion
 - name: Afficher les informations de connexion
   ansible.builtin.debug:
-    msg: |
-      Machine virtuelle déployée avec succès !
-      Nom: {{ virtual_machine.name }}
-      Nom d'utilisateur: {{ virtual_machine.admin_username }}
-      Mot de passe: {{ virtual_machine.admin_password }}
-      Pour vous connecter: ssh {{ virtual_machine.admin_username }}@{{ pip_info.publicipaddresses[0].ip_address }}
+    msg:
+      - "Machine virtuelle déployée avec succès !"
+      - "Nom: {{ virtual_machine.name }}"
+      - "Nom d'utilisateur: {{ virtual_machine.admin_username }}"
+      - "Pour vous connecter : ssh {{ virtual_machine.admin_username }}@{{ pip_info.publicipaddresses[0].ip_address }}"

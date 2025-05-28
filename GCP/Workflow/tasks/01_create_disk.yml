@@ -1,5 +1,9 @@
+# =============================================
+# Création du Disque dans GCP
+# =============================================
 ---
-- name: 01 Create Disk in GCP
+# Créer le disque dans GCP
+- name: Create Disk in GCP
   google.cloud.gcp_compute_disk:
     name: "{{ disk_name }}"
     size_gb: "{{ disk_size }}"
@@ -8,6 +12,7 @@
     state: present
   register: disk
 
+# Afficher les informations du disque
 - name: "Artifact the Disk vars"
   ansible.builtin.set_stats:
     data:

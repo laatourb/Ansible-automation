@@ -1,5 +1,7 @@
 ---
-# Create a Security Group
+# =============================================
+# Création du Groupe de Sécurité dans AWS
+# =============================================
 - name: Create a Security Group
   amazon.aws.ec2_security_group:
     name: "{{ security_group_name }}"
@@ -14,7 +16,7 @@
         rule_desc: "allow all on port 80"
   register: security_group 
 
-# Display the information of the security group
+# Afficher les informations du groupe de sécurité
 - name: Afficher les informations du groupe de sécurité
   ansible.builtin.debug:
     var: security_group

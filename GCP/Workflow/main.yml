@@ -3,11 +3,13 @@
 - name: Création d'une infrastructure GCP complète
   hosts: localhost
   gather_facts: false
-  
+
+# Variables d'environnement
   vars_files:
     - vars/main.yml
     - vars/defaults.yml
 
+# Tâches à exécuter
   tasks:
     - name: Inclure les tâches de création du disque
       ansible.builtin.import_tasks: tasks/01_create_disk.yml

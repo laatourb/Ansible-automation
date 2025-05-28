@@ -1,0 +1,26 @@
+# Fichiers de credentials
+**/*.pem
+**/*.key
+**/*.crt
+
+# Variables d'environnement
+.env
+*.env
+
+# Fichiers temporaires
+*.tmp
+*.swp
+*~
+
+# Logs
+*.log
+
+# Fichiers de cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Fichiers spécifiques aux clouds
+**/gcp-credentials.json
+**/aws-credentials.json
+**/azure-credentials.json 

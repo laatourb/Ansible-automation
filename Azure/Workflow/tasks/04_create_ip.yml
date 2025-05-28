@@ -1,5 +1,9 @@
---- # Get facts for the user
-- name: 04 Créer l'adresse IP publique Azure
+# =============================================
+# Création de l'Adresse IP Publique Azure
+# =============================================
+---
+# Créer l'adresse IP publique Azure
+- name: Créer l'adresse IP publique Azure
   azure.azcollection.azure_rm_publicipaddress:
     resource_group: "{{ resource_group.name }}"
     name: "{{ public_ip.name }}"
@@ -7,10 +11,12 @@
     state: present
   register: pip_output
 
+# Afficher le message de confirmation de l'adresse IP
 - name: Afficher le message de confirmation de l'adresse IP
   ansible.builtin.debug:
     msg: "Adresse IP publique créée avec succès : {{ public_ip.name }}"
 
+# Afficher les détails de l'adresse IP
 - name: Afficher les détails de l'adresse IP
   ansible.builtin.debug:
     var: pip_output

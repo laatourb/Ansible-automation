@@ -1,11 +1,35 @@
+# =============================================
+# Playbook Principal - Déploiement Azure
+# =============================================
+#
+# Ce playbook orchestre le déploiement complet d'une infrastructure Azure
+# en suivant une approche étape par étape.
+#
+# Étapes de déploiement :
+# 1. Création du groupe de ressources
+# 2. Configuration du réseau virtuel
+# 3. Configuration du sous-réseau
+# 4. Création de l'adresse IP publique
+# 5. Configuration du groupe de sécurité réseau
+# 6. Configuration de l'interface réseau
+# 7. Déploiement de la machine virtuelle
+#
+# Variables requises :
+# - Toutes les variables sont définies dans vars/main.yml et vars/defaults.yml
+# - Les variables sensibles sont stockées dans vars/vault.yml (chiffré)
+#
+# Exemple d'utilisation :
+# ansible-playbook main.yml --vault-password-file .vault_pass
+# =============================================
+
 ---
-- name: Déploiement complet de l'infrastructure Azure
+- name: Déploiement Infrastructure Azure
   hosts: localhost
   gather_facts: false
   vars_files:
     - vars/main.yml
     - vars/defaults.yml
-    - credentials.yml
+    - vars/vault.yml
 
   # environment:
   #   AZURE_SUBSCRIPTION_ID: "{{ azure_subscription_id }}"
@@ -14,23 +38,45 @@
   #   AZURE_TENANT: "{{ azure_tenant }}"
 
   tasks:
-    - name: Inclure la création du groupe de ressources
+    # Importation des tâches dans l'ordre d'exécution
+    - name: Importation des tâches de déploiement
       ansible.builtin.import_tasks: tasks/01_create_rg.yml
+      tags: 
+        - always
+        - resource_group
 
-    - name: Inclure la création du réseau virtuel
+    - name: Configuration du réseau virtuel
       ansible.builtin.import_tasks: tasks/02_create_vnet.yml
+      tags: 
+        - network
+        - vnet
 
-    - name: Inclure la création du sous-réseau
+    - name: Configuration du sous-réseau
       ansible.builtin.import_tasks: tasks/03_create_subnet.yml
+      tags: 
+        - network
+        - subnet
 
-    - name: Inclure la création de l'adresse IP publique
+    - name: Création de l'adresse IP publique
       ansible.builtin.import_tasks: tasks/04_create_ip.yml
+      tags: 
+        - network
+        - public_ip
 
-    - name: Inclure la création du groupe de sécurité réseau
+    - name: Configuration du groupe de sécurité réseau
       ansible.builtin.import_tasks: tasks/05_network_security_group.yml
+      tags: 
+        - security
+        - nsg
 
-    - name: Inclure la création de l'interface réseau
+    - name: Configuration de l'interface réseau
       ansible.builtin.import_tasks: tasks/06_nic.yml
+      tags: 
+        - network
+        - nic
 
-    - name: Inclure la création de la machine virtuelle
-      ansible.builtin.import_tasks: tasks/07_create_vm.yml 
+    - name: Déploiement de la machine virtuelle
+      ansible.builtin.import_tasks: tasks/07_create_vm.yml
+      tags: 
+        - compute
+        - vm 

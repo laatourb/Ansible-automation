@@ -1,5 +1,7 @@
 ---
-# Launch an EC2 Instance
+# =============================================
+# Création de l'Instance EC2 dans AWS
+# =============================================
 - name: Launch an EC2 Instance
   amazon.aws.ec2_instance:
     name: "{{ instance_name }}"
@@ -14,7 +16,7 @@
       assign_public_ip: "{{ assign_public_ip }}"
     image_id: "{{ ami }}" 
 
-# Display the information of the EC2 instance
+# Afficher les informations de l'instance EC2
 - name: Afficher les informations de l'instance EC2
   ansible.builtin.debug:
     var: ec2

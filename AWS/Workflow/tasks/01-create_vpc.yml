@@ -1,5 +1,7 @@
 ---
-# Create a new VPC
+# =============================================
+# Création du Réseau Virtuel dans AWS
+# =============================================
 - name: Create a new VPC
   amazon.aws.ec2_vpc_net:
     name: "{{ vpc_name }}"
@@ -7,11 +9,13 @@
     region: "{{ aws_region }}"
   register: vpc
 
+# Afficher les informations du VPC
 - name: Afficher les informations du VPC
   ansible.builtin.debug:
     var: vpc
 
-# Create a new Subnet
+# Création du Sous-Réseau dans AWS
+# =============================================
 - name: Create a new Subnet
   amazon.aws.ec2_vpc_subnet:
     cidr: "{{ subnet_cidr }}"
@@ -19,7 +23,7 @@
     vpc_id: "{{ vpc.vpc.id }}"
   register: subnet 
 
-# Display the information of the subnet
+# Afficher les informations du sous-réseau
 - name: Afficher les informations du sous-réseau
   ansible.builtin.debug:
     var: subnet

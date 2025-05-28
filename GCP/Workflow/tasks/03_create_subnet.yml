@@ -1,4 +1,8 @@
+# =============================================
+# Création du Sous-Réseau dans GCP
+# =============================================
 ---
+# Créer le sous-réseau dans GCP
 - name: 03 Create Subnet in Network
   google.cloud.gcp_compute_subnetwork:
     name: "{{ subnet_name }}"
@@ -8,6 +12,7 @@
     state: present
   register: subnet
 
+# Afficher les informations du sous-réseau
 - name: "Artifact the Subnet vars"
   ansible.builtin.set_stats:
     data:

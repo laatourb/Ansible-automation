@@ -1,3 +1,6 @@
+# =============================================
+# Création de l'Adresse IP Publique dans GCP
+# =============================================
 ---
 - name: 04 Create an IP Address
   google.cloud.gcp_compute_address:
@@ -6,6 +9,7 @@
     state: present
   register: address
 
+# Afficher les informations de l'adresse IP
 - name: "Artifact the Subnet vars"
   ansible.builtin.set_stats:
     data:
